@@ -89,6 +89,9 @@ Request Body:
   "deliverySpeed": "standard",
   "transportMode": ""
 }
+
+
+![Calculation Result](screenshots/calculation.png)
 ### 🏠 Home Screen
 
 ![Home Screen](screenshots/home.png)
