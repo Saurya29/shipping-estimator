@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const connectDB = require("./src/config/db");
 
 // Routes
@@ -11,7 +12,7 @@ const metaRoutes = require("./src/routes/meta.routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 
-const app = express(); // ✅ Always initialize app FIRST
+const app = express();
 
 // Connect Database
 connectDB();
@@ -24,6 +25,15 @@ app.use(express.json());
 app.use("/api/v1/warehouse", warehouseRoutes);
 app.use("/api/v1/shipping-charge", shippingRoutes);
 app.use("/api/v1/meta", metaRoutes);
+const path = require("path");
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Catch-all route (VERY IMPORTANT)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
+});
 
 // Swagger Configuration
 const swaggerOptions = {
@@ -36,7 +46,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5000"
+        url: process.env.BASE_URL || "http://localhost:5000"
       }
     ]
   },
@@ -46,13 +56,16 @@ const swaggerOptions = {
 const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-// Default Route
-app.get("/", (req, res) => {
-  res.send("Shipping Estimator API is running...");
+// Serve frontend
+app.use(express.static(path.join(__dirname, "frontend")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
 // Start Server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
