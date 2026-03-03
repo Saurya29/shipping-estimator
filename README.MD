@@ -1,18 +1,3 @@
-You’re right 👍 — your current README is not cleanly formatted in GitHub (no proper headings, bullets, or tables rendering properly).
-
-Here is a **properly optimized, clean Markdown version** that will render correctly on GitHub with:
-
-* ✅ Proper headings
-* ✅ Bullet points
-* ✅ Tables
-* ✅ Code blocks
-* ✅ Clean spacing
-* ✅ Professional formatting
-
-Just copy-paste this exactly into `README.md`.
-
----
-
 # 🚚 Shipping Estimator
 
 A full-stack logistics shipping rate calculator built using **Node.js, Express, MongoDB, and Vanilla JavaScript**.
