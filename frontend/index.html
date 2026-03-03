@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shipping Rate Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: url("./assets/port.jpg") center center / cover no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: white;
+}
+
+/* Dark Overlay */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(10,10,20,0.9),
+    rgba(10,10,20,0.6)
+  );
+  z-index: 1;
+}
+
+/* Hero Text */
+.hero-text {
+  position: absolute;
+  left: 8%;
+  top: 30%;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.hero-text h1 span {
+  background: linear-gradient(90deg, #f4b400, #6c63ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-text p {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #ddd;
+}
+
+/* Glass Calculator */
+.calculator-glass {
+  position: relative;
+  z-index: 2;
+  width: 400px;
+  padding: 25px;
+  border-radius: 20px;
+  backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 13px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #6c63ff, #4b3fa6);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.result-box {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  display: none;
+  font-size: 14px;
+}
+
+.error {
+  margin-top: 10px;
+  color: #ffbaba;
+}
+
+.loader {
+  display: none;
+  margin-top: 8px;
+}
+
+@media(max-width: 900px) {
+  .hero-text {
+    position: relative;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  body {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .calculator-glass {
+    width: 100%;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Hero Text -->
+<div class="hero-text">
+  <h1>
+    <span>Calculate</span> shipping<br>
+    rates instantly
+  </h1>
+  <p>
+    Plan your eCommerce shipments in an instant. Estimate courier charges using our smart logistics engine.
+  </p>
+</div>
+
+<!-- Calculator -->
+<div class="calculator-glass">
+  <h2>Shipping Calculator</h2>
+
+  <label>Seller</label>
+  <select id="seller"></select>
+
+  <label>Product</label>
+  <select id="product"></select>
+
+  <label>Customer</label>
+  <select id="customer"></select>
+
+  <label>Delivery Speed</label>
+  <select id="deliverySpeed">
+    <option value="standard">Standard</option>
+    <option value="express">Express</option>
+  </select>
+
+  <!-- NEW: Transport Mode -->
+  <label>Transport Mode</label>
+  <select id="transportMode">
+    <option value="">Auto Select</option>
+    <option value="MiniVan">Mini Van</option>
+    <option value="Truck">Truck</option>
+    <option value="Aeroplane">Aeroplane</option>
+  </select>
+
+  <button onclick="calculateShipping()">Calculate</button>
+
+  <div class="loader" id="loader">Calculating...</div>
+  <div class="error" id="error"></div>
+  <div class="result-box" id="result"></div>
+</div>
+
+<script>
+
+const API_BASE = "http://localhost:5000/api/v1";
+
+async function loadSellers() {
+  const res = await fetch(`${API_BASE}/meta/sellers`);
+  const sellers = await res.json();
+  const sellerEl = document.getElementById("seller");
+  sellerEl.innerHTML = "";
+  sellers.forEach(s => {
+    sellerEl.innerHTML += `<option value="${s._id}">${s.name}</option>`;
+  });
+  if (sellers.length > 0) loadProducts(sellers[0]._id);
+}
+
+async function loadProducts(sellerId) {
+  const res = await fetch(`${API_BASE}/meta/products/${sellerId}`);
+  const products = await res.json();
+  const productEl = document.getElementById("product");
+  productEl.innerHTML = "";
+  products.forEach(p => {
+    productEl.innerHTML += `<option value="${p._id}">${p.name}</option>`;
+  });
+}
+
+async function loadCustomers() {
+  const res = await fetch(`${API_BASE}/meta/customers`);
+  const customers = await res.json();
+  const custEl = document.getElementById("customer");
+  custEl.innerHTML = "";
+  customers.forEach(c => {
+    custEl.innerHTML += `<option value="${c._id}">${c.name}</option>`;
+  });
+}
+
+document.getElementById("seller")
+  .addEventListener("change", (e) => loadProducts(e.target.value));
+
+async function calculateShipping() {
+
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("error").innerText = "";
+  document.getElementById("result").style.display = "none";
+
+  const sellerId = document.getElementById("seller").value;
+  const productId = document.getElementById("product").value;
+  const customerId = document.getElementById("customer").value;
+  const deliverySpeed = document.getElementById("deliverySpeed").value;
+  const transportMode = document.getElementById("transportMode").value;
+
+  const res = await fetch(`${API_BASE}/shipping-charge/calculate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      sellerId,
+      productId,
+      customerId,
+      deliverySpeed,
+      transportMode
+    })
+  });
+
+  const data = await res.json();
+  document.getElementById("loader").style.display = "none";
+
+  if (data.error || data.message) {
+    document.getElementById("error").innerText = data.error || data.message;
+    return;
+  }
+
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").innerHTML = `
+    <strong>Shipping Charge:</strong> ₹${data.shippingCharge.toFixed(2)}<br>
+    <strong>Transport Mode:</strong> ${data.transportMode}<br>
+    <strong>Distance:</strong> ${data.distance.toFixed(2)} km
+  `;
+}
+
+loadSellers();
+loadCustomers();
+
+</script>
+
+</body>
+</html>

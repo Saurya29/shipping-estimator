@@ -1,0 +1,31 @@
+{
+  "name": "shipping-estimator",
+  "version": "1.0.0",
+  "description": "E-Commerce Shipping Charge Estimator API",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "echo \"No tests specified yet\""
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "shipping"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
