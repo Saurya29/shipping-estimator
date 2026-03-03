@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -15,28 +16,19 @@ const swaggerJsdoc = require("swagger-jsdoc");
 
 const app = express();
 
-// Connect Database
+// ================= CONNECT DATABASE =================
 connectDB();
 
-// Middlewares
+// ================= MIDDLEWARES =================
 app.use(cors());
 app.use(express.json());
 
-// API Routes
+// ================= API ROUTES =================
 app.use("/api/v1/warehouse", warehouseRoutes);
 app.use("/api/v1/shipping-charge", shippingRoutes);
 app.use("/api/v1/meta", metaRoutes);
-const path = require("path");
 
-// Serve static frontend files
-app.use(express.static(path.join(__dirname, "frontend")));
-
-// Catch-all route (VERY IMPORTANT)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "index.html"));
-});
-
-// Swagger Configuration
+// ================= SWAGGER =================
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -57,14 +49,17 @@ const swaggerOptions = {
 const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-// Serve frontend
+// ================= SERVE FRONTEND =================
+
+// Serve static files
 app.use(express.static(path.join(__dirname, "frontend")));
 
-app.get("*", (req, res) => {
+// Express 5 safe catch-all route
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
-// Start Server
+// ================= START SERVER =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

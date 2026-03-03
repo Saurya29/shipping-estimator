@@ -205,7 +205,7 @@ button:hover {
 
 <script>
 
-const API_BASE = "http://localhost:5000/api/v1";
+const API_BASE = window.location.origin + "/api/v1";
 
 async function loadSellers() {
   const res = await fetch(`${API_BASE}/meta/sellers`);
