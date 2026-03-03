@@ -1,87 +1,145 @@
-🚚 Shipping Estimator
+You’re right 👍 — your current README is not cleanly formatted in GitHub (no proper headings, bullets, or tables rendering properly).
 
-A full-stack logistics shipping rate calculator built using Node.js, Express, MongoDB, and Vanilla JavaScript.
+Here is a **properly optimized, clean Markdown version** that will render correctly on GitHub with:
 
-It calculates shipping charges based on distance, product weight, transport mode, and delivery speed.
+* ✅ Proper headings
+* ✅ Bullet points
+* ✅ Tables
+* ✅ Code blocks
+* ✅ Clean spacing
+* ✅ Professional formatting
 
-✨ Features
+Just copy-paste this exactly into `README.md`.
 
-Nearest warehouse detection
+---
 
-Haversine distance calculation
+# 🚚 Shipping Estimator
 
-Automatic & manual transport mode selection
+A full-stack logistics shipping rate calculator built using **Node.js, Express, MongoDB, and Vanilla JavaScript**.
 
-Express delivery surcharge support
+It calculates shipping charges based on:
 
-Glassmorphism UI with cinematic background
+* Distance
+* Product weight
+* Transport mode
+* Delivery speed
 
-RESTful API architecture
+---
 
-🧮 Shipping Cost Formula
+## ✨ Features
+
+* 📍 Nearest warehouse detection
+* 📏 Haversine distance calculation
+* 🚛 Automatic & manual transport mode selection
+* ⚡ Express delivery surcharge support
+* 🎨 Glassmorphism UI with cinematic background
+* 🔌 RESTful API architecture
+
+---
+
+## 🧮 Shipping Cost Formula
+
+```
 Shipping Cost =
 (distance × weight × transportRate)
 + Base Charge
 + Express Surcharge (if applicable)
-🚛 Transport Rates
-Mode	Rate
-Mini Van	3
-Truck	2
-Aeroplane	1
-🚦 Auto Mode Logic
+```
 
-Distance > 500 km → Aeroplane
+---
 
-Distance > 100 km → Truck
+## 🚛 Transport Rates
 
-Otherwise → Mini Van
+| Mode      | Rate Multiplier |
+| --------- | --------------- |
+| Mini Van  | 3               |
+| Truck     | 2               |
+| Aeroplane | 1               |
 
-🛠 Tech Stack
+---
 
-Backend
+## 🚦 Auto Mode Logic
 
-Node.js
+* Distance > 500 km → Aeroplane
+* Distance > 100 km → Truck
+* Otherwise → Mini Van
 
-Express.js
+---
 
-MongoDB
+## 🛠 Tech Stack
 
-Mongoose
+### Backend
 
-Frontend
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
 
-HTML
+### Frontend
 
-CSS
+* HTML
+* CSS
+* Vanilla JavaScript
 
-Vanilla JavaScript
+---
 
-📂 Project Structure
+## 📂 Project Structure
+
+```
 Shipping_Estimator/
 ├── src/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   └── services/
 ├── frontend/
 │   └── assets/
 ├── server.js
 ├── package.json
 └── README.md
-⚙️ Setup
-1️⃣ Install Dependencies
+```
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Install Dependencies
+
+```
 npm install
-2️⃣ Create .env
+```
+
+### 2️⃣ Create `.env` File
+
+```
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
-3️⃣ Run Server
+```
+
+### 3️⃣ Run the Server
+
+```
 npm run dev
+```
 
-Server runs on:
+Server runs at:
 
+```
 http://localhost:5000
-🌍 API Endpoint
-Calculate Shipping
-POST /api/v1/shipping-charge/calculate
+```
 
-Request Body:
+---
 
+## 🌍 API Endpoint
+
+### Calculate Shipping
+
+**Method:** `POST`
+**Endpoint:** `/api/v1/shipping-charge/calculate`
+
+### Request Body
+
+```json
 {
   "sellerId": "",
   "productId": "",
@@ -89,9 +147,12 @@ Request Body:
   "deliverySpeed": "standard",
   "transportMode": ""
 }
+```
 
+---
 
-![Calculation Result](screenshots/calculation.png)
+## 📸 Screenshots
+
 ### 🏠 Home Screen
 
 ![Home Screen](screenshots/home.png)
@@ -101,3 +162,5 @@ Request Body:
 ### 📊 Calculation Result
 
 ![Calculation Result](screenshots/calculation.png)
+
+---
